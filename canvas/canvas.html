@@ -1,0 +1,74 @@
+<!DOCTYPE HTML>
+<html>
+  <head>
+    <meta charset="UTF-8" />
+    <title>Canvas Test</title>
+  </head>
+<body>
+  <section>
+    <div>
+        <canvas id="canvas" width="500" height="500">
+         This text is displayed if your browser 
+         does not support HTML5 Canvas.
+        </canvas>
+    </div>
+	<div id="status">
+	</div>
+		
+<script src="canvas.js"></script>
+<script type="text/javascript">
+
+function clear_canvas(ctx) {
+	ctx.ctx.clearRect(0, 0, ctx.WIDTH, ctx.HEIGHT);
+}
+
+function init() {	
+	var canvas, ctx;
+	var WIDTH = 500;
+	var HEIGHT = 500; 	
+	var position = new DrawingObject(25, 25, 10, 0, WIDTH, HEIGHT);
+
+	canvas = document.getElementById("canvas");
+	ctx = canvas.getContext("2d");
+	draw_ctx = new DrawingContext(ctx, WIDTH, HEIGHT);
+	
+	return window.requestAnimationFrame(function(timestamp){draw(draw_ctx, timestamp, [position], [[]]);});
+	// return setInterval(function(timestamp){draw(ctx, timestamp, position);}, 1000);
+}
+
+function draw_background(ctx) {
+	clear_canvas(ctx, 0, 0);
+	draw_rectangle(ctx, {x:0, y:0});
+}
+
+function draw(ctx, timestamp, positions, line_histories) {
+	var status_html = document.getElementById("status");
+	status_html.innerHTML = Math.floor(timestamp/1000);	
+	draw_background(ctx);
+	
+	for (var i = 0;i < positions.length;i++) {
+		draw_star(ctx, positions[i], 25, 20);
+		// draw_circle(ctx, positions[i], 10);
+		draw_line(ctx, positions[i], line_histories[i]);
+		line_histories[i].push(new DrawingObject(positions[i].x, positions[i].y, positions[i].dx, positions[i].dy, positions[i].WIDTH, positions[i].HEIGHT));		
+		positions[i].update(timestamp);
+	}
+	
+	// if (Math.floor(timestamp/100) % 100 == 0) {
+	// 	positions.push(new DrawingObject(positions[i-1].x + 10, 0, 10, 0, positions[i-1].WIDTH, positions[i-1].HEIGHT));
+	// 	line_histories.push([]);
+	// }
+	// if (Math.floor(timestamp/100) % 200 == 0) {
+	// 	positions.shift();
+	// 	// line_histories.shift();
+	// }
+	
+	requestAnimationFrame(function(timestamp){draw(ctx, timestamp, positions, line_histories);});
+}
+
+init();
+</script>
+
+  </section>
+</body>
+</html>
