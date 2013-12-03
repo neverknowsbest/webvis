@@ -26,7 +26,7 @@ function init() {
 	var canvas, ctx;
 	var WIDTH = 500;
 	var HEIGHT = 500; 	
-	var position = new DrawingObject(25, 25, 10, 0, WIDTH, HEIGHT);
+	var position = new DrawingObject(50, 50, 10, 0, WIDTH, HEIGHT);
 
 	canvas = document.getElementById("canvas");
 	ctx = canvas.getContext("2d");
@@ -47,7 +47,7 @@ function draw(ctx, timestamp, positions, line_histories) {
 	draw_background(ctx);
 	
 	for (var i = 0;i < positions.length;i++) {
-		draw_star(ctx, positions[i], 25, 20);
+		draw_star(ctx, positions[i], 25, 10);
 		// draw_circle(ctx, positions[i], 10);
 		draw_line(ctx, positions[i], line_histories[i]);
 		line_histories[i].push(new DrawingObject(positions[i].x, positions[i].y, positions[i].dx, positions[i].dy, positions[i].WIDTH, positions[i].HEIGHT));		

@@ -7,16 +7,24 @@ function draw_circle(ctx, position, r) {
 }
 
 function draw_star(ctx, position, r, arms) {
-	var dt = 2*Math.PI/arms;
+	var dt = 2*Math.PI/(2*arms);
+	var inner_r = r/4
 	position.extent = r;
 	
 	ctx.ctx.strokeStyle = "#58FAF4";
 	ctx.ctx.beginPath();	
 	ctx.ctx.moveTo(position.x, position.y);
-	for (var i = 0;i < arms;i++) {
-		ctx.ctx.lineTo(position.x + r * Math.cos(dt * i), 
-						position.y + r * Math.sin(dt * i));
-		ctx.ctx.moveTo(position.x, position.y);
+	for (var i = 0;i < arms*2+1;i++) {
+		if (i == 0) {
+			ctx.ctx.moveTo(position.x + inner_r * Math.cos(dt * i), 
+							position.y + inner_r * Math.sin(dt * i));
+		} else if (i % 2 == 1) {
+			ctx.ctx.lineTo(position.x + r * Math.cos(dt * i), 
+							position.y + r * Math.sin(dt * i));
+		} else {
+			ctx.ctx.lineTo(position.x + inner_r * Math.cos(dt * i), 
+							position.y + inner_r * Math.sin(dt * i));
+		}
 	}
 	ctx.ctx.stroke();
 }
